@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<title>Playing with Spotify</title>
+<head>
+  <style>
+    body {
+      display: flex;
+      justify-content: center; /* Center horizontally */
+      align-items: center; /* Center vertically */
+      height: 100vh; /* Make the body take up the full viewport height */
+      margin: 0; /* Remove default margin */
+      background: linear-gradient(180deg, #000000, #888888);
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center its children horizontally */
+    }
+
+    .episodes {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .episode {
+      min-width: max-content;
+      margin-bottom: .8rem;
+      padding: .8rem 1rem;
+      border-radius: 10px;
+      border: 0;
+      background: #191414;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .episode:hover {
+      background: #1Db954;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="episodes">
+      <button class="episode" data-spotify-id="spotify:episode:26iIflnjNBaZqhE8A3B4Ri?si=09835eeb392e4422">
+        AI Could Release a Deadly Virus
+      </button>
+      <button class="episode" data-spotify-id="spotify:episode:5eTbLmkY4YTo6hccDwNXzN?si=bf50dbdb8df042e2">
+        Spotify Founder: "Spotify Was a Stupid Idea!"
+      </button>
+      <button class="episode" data-spotify-id="spotify:episode:6Mf2TSEC6PG11TDVHy7uva?si=a9bc5308233445b0">
+        Your Thoughts Are Making You Sick!
+      </button>
+    </div>
+
+    <div id="embed-iframe"></div>
+    <script src="https://open.spotify.com/embed-podcast/iframe-api/v1" async>
+    </script>
+    <script type="text/javascript">
+      window.onSpotifyIframeApiReady = (IFrameAPI) => {
+        const element = document.getElementById('embed-iframe');
+        const options = {
+          width: '100%',
+          height: '200',
+          uri: 'spotify:episode:5eTbLmkY4YTo6hccDwNXzN?si=bf50dbdb8df042e2'
+        };
+        const callback = (EmbedController) => {
+          document.querySelectorAll('.episode').forEach(
+            episode => {
+              episode.addEventListener('click', () => {
+                EmbedController.loadUri(episode.dataset.spotifyId)
+              });
+            })
+        };
+        IFrameAPI.createController(element, options, callback);
+      };
+    </script>
+  </div>
+</body>
+
+</html>
